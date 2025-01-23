@@ -121,7 +121,7 @@ async function fillPDF() {
         const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
 
 
-        const response = await fetch("public/atr.pdf");
+        const response = await fetch("atr.pdf");
         const existingPdfBytes = await response.arrayBuffer();
         const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
