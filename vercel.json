@@ -1,5 +1,13 @@
 {
-  "rewrites": [
-    { "source": "/:path*", "destination": "/index.html" }
+  "headers": [
+    {
+      "source": "/atr.pdf",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
   ]
 }
