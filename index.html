@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grievance Form</title>
+    <link rel="stylesheet" href="public/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+    <h2>Grievance Form</h2>
+    <form id="grievanceForm">
+        <!-- Existing Form Fields -->
+        <label for="atrNo">ATR No:</label>
+        <input type="text" id="atrNo" name="atrNo" required>
+        <br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required>
+        <br>
+        <label for="regNumber">Registration Number:</label>
+        <input type="text" id="regNumber" name="regNumber" required>
+        <br>
+        <label for="Department">Department:</label>
+        <input type="text" id="Department" name="Department" required>
+        <br>
+        <label for="HostelBlock">HostelBlock:</label>
+        <input type="text" id="HostelBlock" name="HostelBlock" required>
+        <br>
+        <label for="RoomNo">RoomNo:</label>
+        <input type="text" id="RoomNo" name="RoomNo" required>
+        <br>
+        <label for="grievance">Grievance:</label>
+        <textarea id="grievance" name="grievance" required></textarea>
+        <br>
+        <label for="feedback">Feedback:</label>
+        <select id="feedback" name="feedback" required>
+            <option value="">--Select Feedback--</option>
+            <option value="Good">Good</option>
+            <option value="Satisfactory">Satisfactory</option>
+            <option value="Poor">Poor</option>
+        </select>
+        <br>
+        <label for="dateGrievance">Date of Grievance:</label>
+        <input type="date" id="dateGrievance" name="dateGrievance" required>
+        <br>
+        <label for="dateResolution">Date of Grievance Resolution:</label>
+        <input type="date" id="dateResolution" name="dateResolution" required>
+        <br>
+        <label for="GrievanceResolvedby">GrievanceResolvedby:</label>
+        <input type="text" id="GrievanceResolvedby" name="GrievanceResolvedby" required>
+        <br>
+        <!-- Signature Buttons -->
+        <button type="button" id="studentSignatureBtn">Add Student Signature</button>
+        <input type="hidden" id="studentSignature">
+        <br>
+        <button type="button" id="additionalSignatureBtn">Add Additional Signature</button>
+        <input type="hidden" id="additionalSignature">
+        <br>
+        <button type="button" onclick="fillPDF()">Generate PDF</button>
+        
+
+
+    </form>
+
+    <!-- Modal for Signature Capture -->
+    <div id="signatureModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 999;">
+        <canvas id="signatureCanvas" style="background: white; margin: 50px auto; display: block; border: 2px solid black;"></canvas>
+        <button id="saveSignature">Save</button>
+        <button id="cancelSignature">Cancel</button>
+    </div>
+    <script src="public/script.js"></script>
+</body>
+</html>
