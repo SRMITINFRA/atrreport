@@ -27,32 +27,45 @@ let drawing = false;
 canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.5;
 
-function startDrawing(e) {
-    drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-}
 
-function draw(e) {
-    if (!drawing) return;
-    ctx.lineWidth = 7;
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-    ctx.stroke();
-}
 
-function stopDrawing() {
-    drawing = false;
-}
-
-// Attach drawing event listeners
+// Attach event listeners for both mouse and touch
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 
 // For touch devices
-canvas.addEventListener("touchstart", (e) => startDrawing(getTouchPos(e)));
-canvas.addEventListener("touchmove", (e) => draw(getTouchPos(e)));
-canvas.addEventListener("touchend", stopDrawing);
+canvas.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent scrolling
+    startDrawing(getTouchPos(e));
+});
+canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault(); // Prevent scrolling
+    draw(getTouchPos(e));
+});
+canvas.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    stopDrawing();
+});
+
+// Function to start drawing
+function startDrawing(position) {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(position.x, position.y);
+}
+
+// Function to draw
+function draw(position) {
+    if (!drawing) return;
+    ctx.lineTo(position.x, position.y);
+    ctx.stroke();
+}
+
+// Function to stop drawing
+function stopDrawing() {
+    drawing = false;
+}
 
 // Helper function to get touch position
 function getTouchPos(e) {
@@ -63,7 +76,6 @@ function getTouchPos(e) {
         y: touch.clientY - rect.top
     };
 }
-
 
 // Show modal for signature
 document.getElementById("studentSignatureBtn").addEventListener("click", () => {
@@ -109,7 +121,7 @@ async function fillPDF() {
         const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
 
 
-        const response = await fetch("atr.pdf");
+        const response = await fetch("public/atr.pdf");
         const existingPdfBytes = await response.arrayBuffer();
         const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
