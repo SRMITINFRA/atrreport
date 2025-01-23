@@ -58,6 +58,7 @@ function startDrawing(position) {
 // Function to draw
 function draw(position) {
     if (!drawing) return;
+    ctx.lineWidth = 5;
     ctx.lineTo(position.x, position.y);
     ctx.stroke();
 }
