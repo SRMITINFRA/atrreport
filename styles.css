@@ -56,6 +56,19 @@ select:focus {
     border-color: #007bff;
     outline: none;
 }
+  #generate-pdf-btn {
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #generate-pdf-btn:hover {
+    background-color: darkorange;
+  }
+
 
 /* Button Styling */
 button {
