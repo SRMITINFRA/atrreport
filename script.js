@@ -49,6 +49,22 @@ canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 
+// For touch devices
+canvas.addEventListener("touchstart", (e) => startDrawing(getTouchPos(e)));
+canvas.addEventListener("touchmove", (e) => draw(getTouchPos(e)));
+canvas.addEventListener("touchend", stopDrawing);
+
+// Helper function to get touch position
+function getTouchPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+    };
+}
+
+
 // Show modal for signature
 document.getElementById("studentSignatureBtn").addEventListener("click", () => {
     currentSignatureTarget = "studentSignature";
