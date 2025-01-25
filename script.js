@@ -186,6 +186,10 @@ async function fillPDF() {
             });
         }
 
+
+        // Create FormData to send with the request
+        const formData = new FormData();
+        formData.append("pdf", blob, "atrReport.pdf");
         // Send the PDF to the backend using fetch
         const response = await fetch("/api/send-pdf", {
             method: "POST",
