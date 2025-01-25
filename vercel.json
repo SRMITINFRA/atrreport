@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/atr.pdf",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
+}
