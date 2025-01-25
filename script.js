@@ -187,23 +187,7 @@ async function fillPDF() {
         }
 
 
-        const sendResponse = await fetch("/api/send-pdf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                pdf: pdfBase64,
-                filename: `ATR_Report_${atrNo}.pdf`,
-            }),
-        });
-
-        const result = await sendResponse.json();
-
-        if (result.success) {
-            alert("PDF emailed successfully!");
-        } else {
-            alert("Failed to send email.");
-        }
-        
+ 
         // Save the PDF
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
