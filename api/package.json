@@ -1,8 +1,8 @@
 {
-    "name": "atr-report",
-    "version": "1.0.0",
-    "main": "script.js",
-    "dependencies": {
-        "nodemailer": "^6.9.3"
-    }
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.4",
+     "nodemailer": "^6.x.x",
+  "formidable": "^3.x.x"
+  }
 }
