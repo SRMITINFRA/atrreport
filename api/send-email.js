@@ -1,67 +1,41 @@
-import nodemailer from "nodemailer";
-import formidable from "formidable";
-import fs from "fs";
-
-export const config = {
-  api: {
-    bodyParser: false, // Required for `formidable`
-  },
-};
+// api/send-email.js
+const nodemailer = require('nodemailer');
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).send({ message: "Method Not Allowed" });
-  }
-
-  try {
-    // Parse the incoming form data
-    const form = new formidable.IncomingForm();
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        console.error("Error parsing form data:", err);
-        return res.status(500).send({ success: false, message: "Form parsing error" });
-      }
-
-      // Check for the uploaded file
-      const pdfFile = files.file;
-      if (!pdfFile || !pdfFile.filepath) {
-        return res.status(400).send({ success: false, message: "No file uploaded" });
-      }
-
-      // Read the file
-      const fileData = fs.readFileSync(pdfFile.filepath);
-
-      // Configure the Nodemailer transporter
+  if (req.method === 'POST') {
+    try {
+      // Setup Nodemailer transporter
       const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com", // Use your SMTP provider's host (e.g., Gmail, Outlook)
-        port: 465, // Typically 465 for secure connections
-        secure: true, // Use SSL/TLS
+        service: 'gmail',
         auth: {
-          user: process.env.EMAIL_USER, // Your email
-          pass: process.env.EMAIL_PASS, // Your email password/app password
+          user: process.env.EMAIL_USERNAME, // Replace with your email
+          pass: process.env.EMAIL_PASSWORD,   // Replace with your password or app password
         },
       });
 
-      // Define the email content
+      // Email options
       const mailOptions = {
-        from: process.env.EMAIL_USER, // Sender address
-        to: "srmistnetwork@gmail.com", // Recipient address
-        subject: "Grievance Form Submission",
-        text: "Attached is the generated Grievance Form PDF.",
+        from: process.env.EMAIL_USERNAME, // Sender address
+        to: 'srmistnetwork@gmail.com', // List of receivers
+        subject: 'Subject of the email',
+        text: 'Body of the email',
         attachments: [
           {
-            filename: "GrievanceForm.pdf",
-            content: fileData,
+            filename: 'GrievanceForm.pdf',
+            content: req.body, // Assuming the PDF is in the body
+            encoding: 'base64',
           },
         ],
       };
 
-      // Send the email
+      // Send email
       await transporter.sendMail(mailOptions);
-      return res.status(200).send({ success: true, message: "Email sent successfully" });
-    });
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return res.status(500).send({ success: false, message: "Error sending email" });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  } else {
+    res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 }
