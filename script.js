@@ -1,4 +1,3 @@
-
 function generateATRNo() {
     const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generate a random 5-digit number
     return `IT-ATR-${randomNumber}`;
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById("downloadAndEmail").addEventListener("click", fillPDF);
 
-
 let currentSignatureTarget = null;
 
 // Initialize the canvas for signature
@@ -29,8 +27,6 @@ let drawing = false;
 // Set canvas size to fill modal
 canvas.width = window.innerWidth * 0.9;
 canvas.height = window.innerHeight * 0.5;
-
-
 
 // Attach event listeners for both mouse and touch
 canvas.addEventListener("mousedown", startDrawing);
@@ -105,9 +101,6 @@ document.getElementById("cancelSignature").addEventListener("click", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     modal.style.display = "none";
 });
-
-
-
 
 async function fillPDF() {
   try {
