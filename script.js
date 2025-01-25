@@ -110,116 +110,103 @@ document.getElementById("cancelSignature").addEventListener("click", () => {
 
 
 async function fillPDF() {
-    try {
-        const date = formatDate(document.getElementById('date').value);
-        const atrNo = document.getElementById('atrNo').value;
-        const studentName = document.getElementById('studentName').value;
-        const regNumber = document.getElementById('regNumber').value;
-        const Department = document.getElementById('Department').value;
-        const HostelBlock = document.getElementById('HostelBlock').value;
-        const RoomNo = document.getElementById('RoomNo').value;
-        const grievance = document.getElementById('grievance').value;
-        const feedback = document.getElementById("feedback").value;
-        const studentSignature = document.getElementById("studentSignature").value;
-        const additionalSignature = document.getElementById("additionalSignature").value;
-        
-        const dateGrievance = formatDate(document.getElementById('dateGrievance').value);
-        const dateResolution = formatDate(document.getElementById('dateResolution').value);
-        const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
-        
+  try {
+    // Fetch form data
+    const date = formatDate(document.getElementById('date').value);
+    const atrNo = document.getElementById('atrNo').value;
+    const studentName = document.getElementById('studentName').value;
+    const regNumber = document.getElementById('regNumber').value;
+    const Department = document.getElementById('Department').value;
+    const HostelBlock = document.getElementById('HostelBlock').value;
+    const RoomNo = document.getElementById('RoomNo').value;
+    const grievance = document.getElementById('grievance').value;
+    const feedback = document.getElementById("feedback").value;
+    const studentSignature = document.getElementById("studentSignature").value;
+    const additionalSignature = document.getElementById("additionalSignature").value;
+    const dateGrievance = formatDate(document.getElementById('dateGrievance').value);
+    const dateResolution = formatDate(document.getElementById('dateResolution').value);
+    const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
 
-        const response = await fetch("atr.pdf");
-        const existingPdfBytes = await response.arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
+    // Load the PDF template
+    const response = await fetch("atr.pdf");
+    const existingPdfBytes = await response.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const pageHeight = firstPage.getHeight();
 
-        const pageHeight = firstPage.getHeight();  // Get the page height
-        const yPosition = (y) => pageHeight - y;  // Inverted Y to make the text go down the page
+    // Fill PDF fields
+    firstPage.drawText(`${date}`, { x: 454, y: pageHeight - 172, size: 12 });
+    firstPage.drawText(`${atrNo}`, { x: 128, y: pageHeight - 173, size: 12 });
+    firstPage.drawText(`${studentName}`, { x: 280, y: pageHeight - 291, size: 12 });
+    firstPage.drawText(`${regNumber}`, { x: 280, y: pageHeight - 318, size: 12 });
+    firstPage.drawText(`${Department}`, { x: 280, y: pageHeight - 338, size: 12 });
+    firstPage.drawText(`${HostelBlock}`, { x: 280, y: pageHeight - 365, size: 12 });
+    firstPage.drawText(`${RoomNo}`, { x: 280, y: pageHeight - 389, size: 12 });
+    firstPage.drawText(`${GrievanceResolvedby}`, { x: 280, y: pageHeight - 537, size: 12 });
+    firstPage.drawText(`${grievance}`, { x: 280, y: pageHeight - 444, size: 12 });
+    firstPage.drawText(`${dateGrievance}`, { x: 280, y: pageHeight - 472, size: 12 });
+    firstPage.drawText(`${dateResolution}`, { x: 280, y: pageHeight - 503, size: 12 });
 
+    // Add feedback tick
+    if (feedback === "Good") {
+      firstPage.drawSvgPath('M 0 10 L 5 15 L 15 0 L 14 -1 L 5 14 L -1 9 Z', {
+        x: 160,
+        y: pageHeight - 576,
+        color: PDFLib.rgb(0, 0, 0.7),
+        borderWidth: 3,
+      });
+    }
 
-        firstPage.drawText(`${date}`, { x: 454, y: yPosition(172), size: 12 });
-        firstPage.drawText(`${atrNo}`, { x: 128, y: yPosition(173), size: 12 });
-        firstPage.drawText(`${studentName}`, { x: 280, y: yPosition(291), size: 12 });
-        firstPage.drawText(`${regNumber}`, { x: 280, y: yPosition(318), size: 12 });
-        firstPage.drawText(`${Department}`, { x: 280, y: yPosition(338), size: 12 });
-        firstPage.drawText(`${HostelBlock}`, { x: 280, y: yPosition(365), size: 12 });
-        firstPage.drawText(`${RoomNo}`, { x: 280, y: yPosition(389), size: 12 });
-        firstPage.drawText(`${GrievanceResolvedby}`, { x: 280, y: yPosition(537), size: 12 });
-        firstPage.drawText(`${grievance}`, { x: 280, y: yPosition(444), size: 12 });
-        firstPage.drawText(`${dateGrievance}`, { x: 280, y: yPosition(472), size: 12 });
-        firstPage.drawText(`${dateResolution}`, { x: 280, y: yPosition(503), size: 12 });
+    // Add student signature
+    if (studentSignature) {
+      const studentSignatureImage = await pdfDoc.embedPng(studentSignature);
+      firstPage.drawImage(studentSignatureImage, {
+        x: 89,
+        y: pageHeight - 654,
+        width: 150,
+        height: 50,
+      });
+    }
 
-        // Add tick mark based on feedback
-        let tickX, tickY;
-        if (feedback === "Good") {
-            tickX = 160;
-            tickY = firstPage.getHeight() - 576;
-        } else if (feedback === "Satisfactory") {
-            tickX = 358;
-            tickY = firstPage.getHeight() - 576;
-        } else if (feedback === "Poor") {
-            tickX = 504;
-            tickY = firstPage.getHeight() - 576;
-        }
-        if (tickX && tickY) {
-            firstPage.drawSvgPath('M 0 10 L 5 15 L 15 0 L 14 -1 L 5 14 L -1 9 Z', {
-                x: tickX,
-                y: tickY,
-                color: PDFLib.rgb(0, 0, 0.7),
-                borderWidth: 3,
-            });
-        }
+    // Add additional signature
+    if (additionalSignature) {
+      const additionalSignatureImage = await pdfDoc.embedPng(additionalSignature);
+      firstPage.drawImage(additionalSignatureImage, {
+        x: 393,
+        y: pageHeight - 654,
+        width: 150,
+        height: 50,
+      });
+    }
 
-        // Add signatures
-        if (studentSignature) {
-            const studentSignatureImage = await pdfDoc.embedPng(studentSignature);
-            firstPage.drawImage(studentSignatureImage, {
-                x: 89,
-                y: firstPage.getHeight() - 654,
-                width: 150,
-                height: 50,
-            });
-        }
+    // Save the updated PDF
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
 
-        if (additionalSignature) {
-            const additionalSignatureImage = await pdfDoc.embedPng(additionalSignature);
-            firstPage.drawImage(additionalSignatureImage, {
-                x: 393,
-                y: firstPage.getHeight() - 654,
-                width: 150,
-                height: 50,
-            });
-        }
-        // Prepare FormData for upload
+    // Upload the PDF
     const formData = new FormData();
     formData.append("file", blob, "GrievanceForm.pdf");
 
-    // Send the PDF to the serverless function
-    const response = await fetch("/api/send-email", {
+    const uploadResponse = await fetch("/api/send-email", {
       method: "POST",
       body: formData,
     });
 
-    const result = await response.json();
+    const result = await uploadResponse.json();
     if (result.success) {
-      alert("PDF downloaded and emailed successfully!");
+      alert("PDF emailed successfully!");
     } else {
       alert("Failed to send email: " + result.message);
     }
 
- 
-        // Save the PDF
-        const pdfBytes = await pdfDoc.save();
-        await sendEmailWithPDF(pdfBytes);
-        
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "GrievanceForm.pdf";
-        link.click();
-    } catch (error) {
-        console.error("Error generating PDF:", error);
-        alert("Failed to generate the PDF.");
-    }
+    // Download the PDF locally
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "GrievanceForm.pdf";
+    link.click();
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    alert("Failed to generate the PDF.");
+  }
 }
