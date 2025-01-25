@@ -1,19 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "api/*.js",
       "use": "@vercel/node"
     }
   ],
-  "headers": [
+  "routes": [
     {
-      "source": "/atr.pdf",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
+      "src": "/.*",
+      "dest": "script.js"
     }
   ]
 }
