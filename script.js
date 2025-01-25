@@ -120,11 +120,6 @@ async function fillPDF() {
         const dateGrievance = formatDate(document.getElementById('dateGrievance').value);
         const dateResolution = formatDate(document.getElementById('dateResolution').value);
         const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
-
-        const pdfBase64 = btoa(
-            String.fromCharCode(...new Uint8Array(existingPdfBytes))
-        );
-
         
 
         const response = await fetch("atr.pdf");
