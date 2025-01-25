@@ -37,15 +37,15 @@ export default async function handler(req, res) {
         port: 465, // Typically 465 for secure connections
         secure: true, // Use SSL/TLS
         auth: {
-          user: "your-email@gmail.com", // Your email
-          pass: "your-email-password-or-app-password", // Your email password/app password
+          user: process.env.EMAIL_USER, // Your email
+          pass: process.env.EMAIL_PASS, // Your email password/app password
         },
       });
 
       // Define the email content
       const mailOptions = {
-        from: "your-email@gmail.com", // Sender address
-        to: "recipient-email@example.com", // Recipient address
+        from: process.env.EMAIL_USER, // Sender address
+        to: "srmistnetwork@gmail.com", // Recipient address
         subject: "Grievance Form Submission",
         text: "Attached is the generated Grievance Form PDF.",
         attachments: [
