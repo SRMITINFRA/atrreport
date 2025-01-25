@@ -41,4 +41,12 @@ app.post("/send-email", upload.single("file"), async (req, res) => {
     }
 });
 
+
+module.exports = app; // If using Express
+// Or for a simpler function:
+module.exports = (req, res) => {
+  res.status(200).send("Server is working!");
+};
+
+
 module.exports = app;
