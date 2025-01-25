@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       // Email options
       const mailOptions = {
         from: process.env.EMAIL_USER,  // Your email
-        to: 'recipient-email@example.com',  // Recipient email
+        to: 'srmistnetwork@gmail.com',  // Recipient email
         subject: 'Grievance Form PDF',
         text: 'Please find the attached grievance form PDF.',
         attachments: [
