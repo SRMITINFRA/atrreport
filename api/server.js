@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.status(200).send("Express server is working!");
 });
 
-module.exports = app;
+
 
 app.post("/send-email", upload.single("file"), async (req, res) => {
     try {
