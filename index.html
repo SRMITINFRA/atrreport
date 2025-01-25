@@ -3,38 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grievance Form</title>
+    <title>Staff ATR Report</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 </head>
 <body>
-    <h2>Grievance Form</h2>
+    <h2>Action Taken Report</h2>
     <form id="grievanceForm">
         <!-- Existing Form Fields -->
         <label for="atrNo">ATR No:</label>
         <input type="text" id="atrNo" name="atrNo" required>
         <br>
+        <label></label>
+        <input type="radio" id="staffOption" name="userType" value="Staff" checked>
+        <label for="staffOption">Staff</label>
+        <input type="radio" id="studentOption" name="userType" value="Student">
+        <label for="studentOption">Student</label>
+        <br>
+        <label for="capturePhotoInput">Capture Photo:</label>
+        <input type="file" id="capturePhotoInput" accept="image/*" capture="environment">
+        <button id="customFileButton">Choose File</button>
+        <input type="hidden" id="photoData">
+        <br>
+
+        
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
         <br>
-        <label for="studentName">Student Name:</label>
-        <input type="text" id="studentName" name="studentName" required>
+        <label for="studentName">Staff or Student Name:</label>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <select id="namePrefix" name="namePrefix" required>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Dr.">Dr.</option>
+            </select>
+            <input type="text" id="studentName" name="studentName" required placeholder="Enter Name">
+        </div>
         <br>
-        <label for="regNumber">Registration Number:</label>
+        <label for="regNumber">Employee No / Registration No:</label>
         <input type="text" id="regNumber" name="regNumber" required>
         <br>
-        <label for="Department">Department:</label>
+        <label for="Department">Department Name:</label>
         <input type="text" id="Department" name="Department" required>
         <br>
-        <label for="HostelBlock">HostelBlock:</label>
+        <label for="HostelBlock">Block/Floor/Room No:</label>
         <input type="text" id="HostelBlock" name="HostelBlock" required>
         <br>
-        <label for="RoomNo">RoomNo:</label>
+        <label for="RoomNo">Official Email ID:</label>
         <input type="text" id="RoomNo" name="RoomNo" required>
         <br>
         <label for="grievance">Grievance:</label>
-        <textarea id="grievance" name="grievance" required></textarea>
-        <br>
+        <input type="text" id="grievance" name="grievance" required maxlength="38">
+        <br> 
+        <!-- <label for="grievance">Grievance:</label>
+        <input type="text" id="grievance" name="grievance" required>
+        <br> -->
         <label for="feedback">Feedback:</label>
         <select id="feedback" name="feedback" required>
             <option value="">--Select Feedback--</option>
@@ -44,7 +68,7 @@
         </select>
         <br>
         <label for="dateGrievance">Date of Grievance:</label>
-        <input type="date" id="dateGrievance" name="dateGrievance" required>
+        <input type="date" id="dateGrievance" name="dateGrievance" required maxlength="38">
         <br>
         <label for="dateResolution">Date of Grievance Resolution:</label>
         <input type="date" id="dateResolution" name="dateResolution" required>
@@ -53,13 +77,18 @@
         <input type="text" id="GrievanceResolvedby" name="GrievanceResolvedby" required>
         <br>
         <!-- Signature Buttons -->
-        <button type="button" id="studentSignatureBtn">Add Student Signature</button>
+        <button type="button" id="studentSignatureBtn">Staff / Student Signature</button>
         <input type="hidden" id="studentSignature">
         <br>
-        <button type="button" id="additionalSignatureBtn">Add Technician Signature</button>
+        <button type="button" id="additionalSignatureBtn">Technician Signature</button>
         <input type="hidden" id="additionalSignature">
         <br>
-        <button id="generate-pdf-btn" type="button" onclick="fillPDF()">Download Report</button>
+
+       
+
+        
+        
+        <button id="generate-pdf-btn" type="button" onclick="fillPDF()">Download ATR</button>
         
 
 
