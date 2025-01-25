@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('atrNo').value = generateATRNo();
 });
 
+document.getElementById("downloadAndEmail").addEventListener("click", fillPDF);
+
+
 let currentSignatureTarget = null;
 
 // Initialize the canvas for signature
@@ -103,29 +106,6 @@ document.getElementById("cancelSignature").addEventListener("click", () => {
     modal.style.display = "none";
 });
 
-async function sendEmailWithPDF(pdfBytes) {
-    const formData = new FormData();
-    formData.append('file', new Blob([pdfBytes], { type: "application/pdf" }), 'GrievanceForm.pdf');
-
-    try {
-        const response = await fetch('/api/send-email', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-        if (result.success) {
-            alert('PDF sent successfully!');
-        } else {
-            alert('Failed to send the PDF.');
-        }
-    } catch (error) {
-        console.error("Error sending email:", error);
-        alert("Error sending email.");
-    }
-}
-
-
 
 
 
@@ -211,7 +191,22 @@ async function fillPDF() {
                 height: 50,
             });
         }
+        // Prepare FormData for upload
+    const formData = new FormData();
+    formData.append("file", blob, "GrievanceForm.pdf");
 
+    // Send the PDF to the serverless function
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert("PDF downloaded and emailed successfully!");
+    } else {
+      alert("Failed to send email: " + result.message);
+    }
 
  
         // Save the PDF
