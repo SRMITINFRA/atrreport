@@ -2,6 +2,10 @@
   "headers": [
     {
       "source": "/atr.pdf",
+      "scripts": {
+      "build": "next build"
+      }
+
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
