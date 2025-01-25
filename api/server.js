@@ -5,12 +5,9 @@ const app = express();
 
 // Middleware for handling file uploads
 const upload = multer();
-const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => {
-  res.status(200).send("Express server is working!");
-});
+module.exports = (req, res) => {
+  res.status(200).send("Server is working!");
+};
 
 
 
