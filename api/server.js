@@ -15,13 +15,13 @@ app.post("/send-email", upload.single("file"), async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
-                user: "your-email@gmail.com",
-                pass: "your-email-password",
+                user: "srmistnetwork@gmail.com",
+                pass: "@itsupport2019",
             },
         });
 
         const mailOptions = {
-            from: "your-email@gmail.com",
+            from: "srmistnetwork@gmail.com",
             to: "srmistnetwork@gmail.com", // Common email
             subject: "Generated PDF",
             text: "Please find the attached PDF.",
