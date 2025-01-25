@@ -121,6 +121,11 @@ async function fillPDF() {
         const dateResolution = formatDate(document.getElementById('dateResolution').value);
         const GrievanceResolvedby = document.getElementById('GrievanceResolvedby').value;
 
+        const pdfBase64 = btoa(
+            String.fromCharCode(...new Uint8Array(existingPdfBytes))
+        );
+
+        
 
         const response = await fetch("atr.pdf");
         const existingPdfBytes = await response.arrayBuffer();
@@ -187,21 +192,22 @@ async function fillPDF() {
         }
 
 
-        // Create FormData to send with the request
-        const formData = new FormData();
-        formData.append("pdf", blob, "atrReport.pdf");
-        // Send the PDF to the backend using fetch
-        const response = await fetch("/api/send-pdf", {
+        const sendResponse = await fetch("/api/send-pdf", {
             method: "POST",
-            body: formData
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                pdf: pdfBase64,
+                filename: `ATR_Report_${atrNo}.pdf`,
+            }),
         });
 
-        if (!response.ok) {
-            throw new Error("Failed to send PDF");
-        }
+        const result = await sendResponse.json();
 
-        // Success handling
-        alert("PDF sent successfully!");
+        if (result.success) {
+            alert("PDF emailed successfully!");
+        } else {
+            alert("Failed to send email.");
+        }
         
         // Save the PDF
         const pdfBytes = await pdfDoc.save();
