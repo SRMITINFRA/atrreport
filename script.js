@@ -186,6 +186,19 @@ async function fillPDF() {
             });
         }
 
+        // Send the PDF to the backend using fetch
+        const response = await fetch("/api/send-pdf", {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to send PDF");
+        }
+
+        // Success handling
+        alert("PDF sent successfully!");
+        
         // Save the PDF
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
